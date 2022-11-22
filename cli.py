@@ -1,5 +1,7 @@
 import click
 
+from pki_a22_app.haarcascades.haarcascades import show
+
 
 @click.group()
 def pki_a22_app():
@@ -15,6 +17,7 @@ def main(name):
 
 def run_app(name):
     print(f"Hello {name}!")
+    show()
 
 if __name__ == '__main__':
     main("Bob")

@@ -1,3 +1,3 @@
-# Classifier-App using Haar cascades  
+# Classifier-App using Haar Cascades
 
-Pyhthon app using OpenCV and Haar cascades 
+Python app using OpenCV and Haar Cascades

@@ -39,13 +39,15 @@ b2.pack()
 b3 = ttk.Button(root, text='Button 3', command=lambda: select('Button 2'))
 b3.pack()
 
-#Slider
+#=====================
+#CLASS Slider
+#=====================
 class slider:    
     def __init__(self,name,x_pos=0,y_pos=0):
         self.name = name
         self.x_pos = x_pos
         self.y_pos = y_pos
-        self.val = tk.IntVar()
+        self.val = tk.IntVar() #Rückgabewerte des Slider, abfragen mit self.get_val()
         
         self.lbl = ttk.Label(root, text=name)
         self.lbl.place(x=self.x_pos,y=self.y_pos)

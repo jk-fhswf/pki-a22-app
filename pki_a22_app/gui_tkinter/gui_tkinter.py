@@ -2,105 +2,117 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 import numpy as np
-import cv2
+#import cv2
 from PIL import Image, ImageTk
 
-#init
+#TKinter Fenster initialisieren (PS_2022-12-12)
 root = tk.Tk()
-root.title('Projekt Gruppe A2-2')
+root.title('Projekt Gruppe a2-2 - Thema: Bilderkennung Haar-Cascades')
 
-#Window width x height
-window_w = 800
-window_h = 600
+#Fenster width x height (PS_2022-12-12)
+window_width = 800
+window_height = 600
 
-#Bildschirm width x height
-screen_w = root.winfo_screenwidth()
-screen_h = root.winfo_screenheight()
+#Bildschirm Auslösung width x height (PS_2022-12-12)
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
 
-#Bildschirmmitte
-center_x = int(screen_w/2 - window_w / 2)
-center_y = int(screen_h/2 - window_h / 2)
+#Fenstermitte auf Bildschirmmitte (PS_2022-12-12)
+center_x = int(screen_width/2 - window_width / 2)
+center_y = int(screen_height/2 - window_height / 2)
 
-#Fenster mittig auf Bildschirm ausrichten
-root.geometry(f'{window_w}x{window_h}+{center_x}+{center_y}')
+#Fenster ausrichten und Größe einstellen (PS_2022-12-12)
+root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 
-#Fenstergroesse Ändern sperren
+#Fenstergroesse Änderung sperren (PS_2022-12-12)
 root.resizable(False, False)
 
-#Textlabel
-message = tk.Label(root, text="Hello, World!")
-message.pack()
+#FH SWF Logo einbinden (PS_2022-12-12)
+#fh_logo_path = r"C:\Users\Peter\Desktop\Studium\01_Semester\01_Programmierung für KI\Projekt\ressources\Logo.jpg"
+fh_logo_path = "pki_a22_app\gui_tkinter\Logo.jpg"
+fh_logo = Image.open(fh_logo_path)
+fh_logo = fh_logo.resize((200,50), Image.ANTIALIAS)
+fh_logo_tk = ImageTk.PhotoImage(fh_logo)
+ttk.Label(root, image=fh_logo_tk).place(x=0,y=0)
 
-message2 = tk.Label(root, text="Hello, World!")
-message2.pack()
+#Textlabel Überschriften (PS_2022-12-12)
+input_label = ttk.Label(root, text="INPUT IMAGE")
+input_label.place(x=150,y=55)
 
-#Button Funktion mit Callback
-def select(option):
-    print(np.add(s1.get_val(),10))
-    
+output_label = ttk.Label(root, text="OUTPUT IMAGE")
+output_label.place(x=550,y=55)
+
+#Input Bild einbinden (PS_2022-12-12)
+input_img_max_width = 350
+input_img_max_height = 350
+#input_img_path = r"C:\Users\Peter\Desktop\Studium\01_Semester\01_Programmierung für KI\Projekt\ressources\kokos.jpg"
+input_img_path = "pki_a22_app\gui_tkinter\kokos.jpg"
+input_img = Image.open(input_img_path)
+
+width, height = input_img.size
+if width > height:
+    scalingfactor = input_img_max_width /width
+    width = input_img_max_width
+    height = int(height*scalingfactor)
+else:
+    scalingfactor = input_img_max_height/height
+    height = input_img_max_height
+    width = int(width*scalingfactor)
+
+input_img = input_img.resize((width,height), Image.ANTIALIAS)
+input_img_tk = ImageTk.PhotoImage(input_img)
+ttk.Label(root, image=input_img_tk).place(x=25,y=75)
+
+#Output Bild einbinden (PS_2022-12-12)
+output_img_max_width = 350
+output_img_max_height = 350
+#input_img_path = r"C:\Users\Peter\Desktop\Studium\01_Semester\01_Programmierung für KI\Projekt\ressources\kokos.jpg"
+output_img_path = "pki_a22_app\gui_tkinter\kokos.jpg"
+output_img = Image.open(output_img_path)
+
+width, height = output_img.size
+if width > height:
+    scalingfactor = output_img_max_width /width
+    width = output_img_max_width
+    height = int(height*scalingfactor)
+else:
+    scalingfactor = output_img_max_height/height
+    height = output_img_max_height
+    width = int(width*scalingfactor)
+
+output_img = output_img.resize((width,height), Image.ANTIALIAS)
+output_img_tk = ImageTk.PhotoImage(output_img)
+output_img_tk_label = ttk.Label(root, image=output_img_tk)
+output_img_tk_label.place(x=425,y=75)
+
+#Bild öffnen Button (PS_2022-12-12)
 def fileopen():
     path = tk.filedialog.askopenfilename()
     print (path)
-    message.config(text=path)
+    #output_img_tk_label.config(image=path)
     #return path
+open_btn = ttk.Button(root, text='Bild öffnen', command=lambda: fileopen())
+open_btn.place(x=150,y=450)
 
-b1 = ttk.Button(root, text='Button 1', command=lambda: select('Button 1'))
-b1.pack()
-b2 = ttk.Button(root, text='Button 2', command=lambda: select('Button 2'))
-b2.pack()
-b3 = ttk.Button(root, text='Datei öffnen', command=lambda: fileopen())
-b3.pack()
+#Pulldown für Haar Cascades (PS_2022-12-12)
+dropdown = [
+"Eye Filter",
+"Mouth Filter",
+"Head Filter"
+] #usw
 
-#=====================
-#CLASS Slider
-#=====================
-class slider:    
-    def __init__(self,name,x_pos=0,y_pos=0):
-        self.name = name
-        self.x_pos = x_pos
-        self.y_pos = y_pos
-        self.val = tk.IntVar() #Rückgabewerte des Slider, abfragen mit self.get_val()
-        
-        self.lbl = ttk.Label(root, text=name)
-        self.lbl.place(x=self.x_pos,y=self.y_pos)
-        
-        self.s = ttk.Scale(root, from_=0, to=100, orient="horizontal",command=self.slider_change,variable=self.val)
-        self.s.place(x=self.x_pos+100,y=self.y_pos)
-        
-        self.v = ttk.Label(root,text=self.get_val())
-        self.v.place(x=self.x_pos+210,y=self.y_pos)
-    def get_val(self):
-        return self.val.get()
-    def slider_change(self, event):
-        self.v.configure(text=self.get_val())
-        message2.config(text=str(self.get_val()))
+dropdown_wahl = tk.StringVar(root)
+dropdown_wahl.set(dropdown[0])
 
+dropdown_label = tk.OptionMenu(root, dropdown_wahl, *dropdown)
+dropdown_label.place(x=550,y=480)
 
+def update():
+    print (dropdown_wahl.get())
+    #dropdown_label.pack()
 
-path = r"C:\Users\Peter\Desktop\Studium\01_Semester\01_Programmierung für KI\Projekt\Logo.jpg"
-#path = tk.filedialog.askopenfilename()
-image = Image.open(path)
-python_image = ImageTk.PhotoImage(image)
-ttk.Label(root, image=python_image).pack()
+update_btn = tk.Button(root, text="Output Update", command=update)
+update_btn.place(x=550,y=450)
 
-#python_image = tk.PhotoImage(file=path)
-#ttk.Label(root, image=python_image).place(x=0,y=0)
-
-xpos_slider_window = 250
-ypos_slider_window = 200
-s1 = slider("ScaleFactor",xpos_slider_window,ypos_slider_window)
-s2 = slider("MinNeighbors",xpos_slider_window,ypos_slider_window+30)
-s3 = slider("minSize",xpos_slider_window,ypos_slider_window+60)
-s4 = slider("maxSize",xpos_slider_window,ypos_slider_window+90)
-
-OPTIONS = [
-"Jan",
-"Feb",
-"Mar"
-] #etc
-variable = tk.StringVar(root)
-variable.set(OPTIONS[0]) # default value
-w = tk.OptionMenu(root, variable, *OPTIONS)
-w.place(x=0,y=0)
-
+#Fenster Hauptschleife (PS_2022-12-12)
 root.mainloop()

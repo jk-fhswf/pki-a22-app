@@ -1,11 +1,27 @@
+
+"""Utility functions for downloading content"""
 import urllib.request
 from pathlib import Path
 
 import streamlit as st
 
 
-# This code is based on https://github.com/streamlit/demo-self-driving/blob/230245391f2dda0cb464008195a470751c01770b/streamlit_app.py#L48  # noqa: E501
-def download_file(url, download_to: Path, expected_size=None):
+
+def download_file(url: str, download_to: Path, expected_size: int=None):
+    """
+    Helper fucntion to download files using a URL. This fucntion was taken over from extisting examples.
+    # This code is based on https://github.com/streamlit/demo-self-driving/blob/230245391f2dda0cb464008195a470751c01770b/streamlit_app.py#L48  # noqa: E501
+
+    Parameters
+    ----------
+    url : str
+        URL of file to download
+    download_to : Path
+        Path were to download file
+    expected_size : int, optional
+        exptected file size to check for working content, by default None
+    """
+
     # Don't download the file twice.
     # (If possible, verify the download using the file length.)
     if download_to.exists():

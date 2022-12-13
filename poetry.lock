@@ -472,22 +472,6 @@ numpy = [
 ]
 
 [[package]]
-name = "opencv-python-headless"
-version = "4.6.0.66"
-description = "Wrapper package for OpenCV python bindings."
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-numpy = [
-    {version = ">=1.21.2", markers = "python_version >= \"3.10\" or python_version >= \"3.6\" and platform_system == \"Darwin\" and platform_machine == \"arm64\""},
-    {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
-    {version = ">=1.14.5", markers = "python_version >= \"3.7\""},
-    {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
-]
-
-[[package]]
 name = "packaging"
 version = "22.0"
 description = "Core utilities for Python packages"
@@ -949,7 +933,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.9.7 || >3.9.7,<3.11.0 || >=3.12.0,<4.0"
-content-hash = "6c12cf011a32dd49d1d635fe1553d52a6c31d7a2b5ebc1f60378ef29857c8006"
+content-hash = "3a7ed925dfb3d315d133546adbbcd730e772c03696a9a16101e76ed6595ed3ef"
 
 [metadata.files]
 aioice = []
@@ -991,7 +975,6 @@ matplotlib = []
 netifaces = []
 numpy = []
 opencv-contrib-python = []
-opencv-python-headless = []
 packaging = []
 pandas = []
 pillow = []

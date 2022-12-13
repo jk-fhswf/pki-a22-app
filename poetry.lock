@@ -456,7 +456,7 @@ optional = false
 python-versions = ">=3.8"
 
 [[package]]
-name = "opencv-contrib-python"
+name = "opencv-python-headless"
 version = "4.6.0.66"
 description = "Wrapper package for OpenCV python bindings."
 category = "main"
@@ -933,7 +933,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.9.7 || >3.9.7,<3.11.0 || >=3.12.0,<4.0"
-content-hash = "3a7ed925dfb3d315d133546adbbcd730e772c03696a9a16101e76ed6595ed3ef"
+content-hash = "a4cd8d75a24d931d0666b7003abd33c55f52cfb105279d6bae8b7686d9fb316b"
 
 [metadata.files]
 aioice = []
@@ -974,7 +974,7 @@ markupsafe = []
 matplotlib = []
 netifaces = []
 numpy = []
-opencv-contrib-python = []
+opencv-python-headless = []
 packaging = []
 pandas = []
 pillow = []

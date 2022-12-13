@@ -2,8 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 import numpy as np
-#import cv2
+import cv2
 from PIL import Image, ImageTk
+
 
 #TKinter Fenster initialisieren (PS_2022-12-12)
 root = tk.Tk()
@@ -30,10 +31,21 @@ root.resizable(False, False)
 #FH SWF Logo einbinden (PS_2022-12-12)
 #fh_logo_path = r"C:\Users\Peter\Desktop\Studium\01_Semester\01_Programmierung für KI\Projekt\ressources\Logo.jpg"
 fh_logo_path = "pki_a22_app\gui_tkinter\Logo.jpg"
-fh_logo = Image.open(fh_logo_path)
-fh_logo = fh_logo.resize((200,50), Image.ANTIALIAS)
-fh_logo_tk = ImageTk.PhotoImage(fh_logo)
-ttk.Label(root, image=fh_logo_tk).place(x=0,y=0)
+#fh_logo = Image.open(fh_logo_path)
+#fh_logo = fh_logo.resize((200,50), Image.ANTIALIAS)
+#fh_logo_tk = ImageTk.PhotoImage(fh_logo)
+#ttk.Label(root, image=fh_logo_tk).place(x=0,y=0)
+
+#TEST AB HIER------------------------
+fh_logo_cv = cv2.cvtColor(cv2.imread(fh_logo_path), cv2.COLOR_BGR2RGB)
+#fh_logo_cv_height, fh_logo_cv_width, no_channels = fh_logo_cv.shape
+root_canvas = tk.Canvas(root, width = window_width, height = window_height)
+root_canvas.pack()
+
+fh_logo_cv_tk = ImageTk.PhotoImage(image = Image.fromarray(fh_logo_cv).resize((200,50), Image.ANTIALIAS))
+root_canvas.create_image(5, 5, image=fh_logo_cv_tk, anchor=tk.NW)
+
+#TEST BIS HIER------------------------
 
 #Textlabel Überschriften (PS_2022-12-12)
 input_label = ttk.Label(root, text="INPUT IMAGE")
@@ -88,17 +100,21 @@ output_img_tk_label.place(x=425,y=75)
 #Bild öffnen Button (PS_2022-12-12)
 def fileopen():
     path = tk.filedialog.askopenfilename()
-    print (path)
+    print ("DATEIPFAD:", path)
+    fh_logo_cv2 = cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
+    #fh_logo_cv_tk = ImageTk.PhotoImage(image = Image.fromarray(fh_logo_cv).resize((200,50), Image.ANTIALIAS))
+    #root_canvas.create_image(5, 5, image=fh_logo_cv_tk, anchor=tk.NW)
     #output_img_tk_label.config(image=path)
     #return path
+    
 open_btn = ttk.Button(root, text='Bild öffnen', command=lambda: fileopen())
 open_btn.place(x=150,y=450)
 
 #Pulldown für Haar Cascades (PS_2022-12-12)
 dropdown = [
-"Eye Filter",
-"Mouth Filter",
-"Head Filter"
+"Eye Classifier",
+"Mouth Classifier",
+"Head Classifier"
 ] #usw
 
 dropdown_wahl = tk.StringVar(root)

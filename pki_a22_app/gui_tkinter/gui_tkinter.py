@@ -13,6 +13,8 @@ root.title('Projekt Gruppe a2-2 - Thema: Bilderkennung Haar-Cascades')
 #Fenster width x height (PS_2022-12-12)
 window_width = 800
 window_height = 600
+img_max_width = 350
+img_max_height = 350
 
 #Bildschirm Auslösung width x height (PS_2022-12-12)
 screen_width = root.winfo_screenwidth()
@@ -28,107 +30,38 @@ root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 #Fenstergroesse Änderung sperren (PS_2022-12-12)
 root.resizable(False, False)
 
-#FH SWF Logo einbinden (PS_2022-12-12)
-#fh_logo_path = r"C:\Users\Peter\Desktop\Studium\01_Semester\01_Programmierung für KI\Projekt\ressources\Logo.jpg"
-fh_logo_path = "pki_a22_app\gui_tkinter\Logo.jpg"
-#fh_logo = Image.open(fh_logo_path)
-#fh_logo = fh_logo.resize((200,50), Image.ANTIALIAS)
-#fh_logo_tk = ImageTk.PhotoImage(fh_logo)
-#ttk.Label(root, image=fh_logo_tk).place(x=0,y=0)
-
-#TEST AB HIER------------------------
-fh_logo_cv = cv2.cvtColor(cv2.imread(fh_logo_path), cv2.COLOR_BGR2RGB)
-#fh_logo_cv_height, fh_logo_cv_width, no_channels = fh_logo_cv.shape
-root_canvas = tk.Canvas(root, width = window_width, height = window_height)
-root_canvas.pack()
-
-fh_logo_cv_tk = ImageTk.PhotoImage(image = Image.fromarray(fh_logo_cv).resize((200,50), Image.ANTIALIAS))
-root_canvas.create_image(5, 5, image=fh_logo_cv_tk, anchor=tk.NW)
-
-#TEST BIS HIER------------------------
-
-#Textlabel Überschriften (PS_2022-12-12)
-input_label = ttk.Label(root, text="INPUT IMAGE")
-input_label.place(x=150,y=55)
-
-output_label = ttk.Label(root, text="OUTPUT IMAGE")
-output_label.place(x=550,y=55)
-
-#Input Bild einbinden (PS_2022-12-12)
-input_img_max_width = 350
-input_img_max_height = 350
-#input_img_path = r"C:\Users\Peter\Desktop\Studium\01_Semester\01_Programmierung für KI\Projekt\ressources\kokos.jpg"
-input_img_path = "pki_a22_app\gui_tkinter\kokos.jpg"
-input_img = Image.open(input_img_path)
-
-width, height = input_img.size
-if width > height:
-    scalingfactor = input_img_max_width /width
-    width = input_img_max_width
-    height = int(height*scalingfactor)
-else:
-    scalingfactor = input_img_max_height/height
-    height = input_img_max_height
-    width = int(width*scalingfactor)
-
-input_img = input_img.resize((width,height), Image.ANTIALIAS)
-input_img_tk = ImageTk.PhotoImage(input_img)
-ttk.Label(root, image=input_img_tk).place(x=25,y=75)
-
-#Output Bild einbinden (PS_2022-12-12)
-output_img_max_width = 350
-output_img_max_height = 350
-#input_img_path = r"C:\Users\Peter\Desktop\Studium\01_Semester\01_Programmierung für KI\Projekt\ressources\kokos.jpg"
-output_img_path = "pki_a22_app\gui_tkinter\kokos.jpg"
-output_img = Image.open(output_img_path)
-
-width, height = output_img.size
-if width > height:
-    scalingfactor = output_img_max_width /width
-    width = output_img_max_width
-    height = int(height*scalingfactor)
-else:
-    scalingfactor = output_img_max_height/height
-    height = output_img_max_height
-    width = int(width*scalingfactor)
-
-output_img = output_img.resize((width,height), Image.ANTIALIAS)
-output_img_tk = ImageTk.PhotoImage(output_img)
-output_img_tk_label = ttk.Label(root, image=output_img_tk)
-output_img_tk_label.place(x=425,y=75)
-
-#Bild öffnen Button (PS_2022-12-12)
-def fileopen():
-    path = tk.filedialog.askopenfilename()
-    print ("DATEIPFAD:", path)
-    fh_logo_cv2 = cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
-    #fh_logo_cv_tk = ImageTk.PhotoImage(image = Image.fromarray(fh_logo_cv).resize((200,50), Image.ANTIALIAS))
-    #root_canvas.create_image(5, 5, image=fh_logo_cv_tk, anchor=tk.NW)
-    #output_img_tk_label.config(image=path)
-    #return path
+def file_open():
+    global input_image
+    filename = filedialog.askopenfilename(filetypes=(("jpg files", "*.jpg"),("png files", "*.png")))
+    input_image = Image.open(filename).resize((img_max_width,img_max_height), Image.ANTIALIAS)
+    input_image_tk = ImageTk.PhotoImage(input_image)
+    input_img_label.config(image=input_image_tk)
+    input_img_label.image = input_image_tk
     
-open_btn = ttk.Button(root, text='Bild öffnen', command=lambda: fileopen())
-open_btn.place(x=150,y=450)
-
-#Pulldown für Haar Cascades (PS_2022-12-12)
-dropdown = [
-"Eye Classifier",
-"Mouth Classifier",
-"Head Classifier"
-] #usw
-
-dropdown_wahl = tk.StringVar(root)
-dropdown_wahl.set(dropdown[0])
-
-dropdown_label = tk.OptionMenu(root, dropdown_wahl, *dropdown)
-dropdown_label.place(x=550,y=480)
-
-def update():
-    print (dropdown_wahl.get())
-    #dropdown_label.pack()
-
-update_btn = tk.Button(root, text="Output Update", command=update)
-update_btn.place(x=550,y=450)
+    output_image = input_image
+    output_image_tk = ImageTk.PhotoImage(output_image)
+    output_img_label.config(image=output_image_tk)
+    output_img_label.image = output_image_tk
+    
+def img_change(classifier):
+    #rel_path_haarcascade = "resources/haarcascades/"
+    #haarcascade_frontalface_default
+    #cascade = cv2.CascadeClassifier(rel_path_haarcascade + classifier + ".xml")
+    output_image = Image.open("pki_a22_app\gui_tkinter\Logo.jpg").resize((img_max_width,img_max_height), Image.ANTIALIAS)
+    output_image_tk = ImageTk.PhotoImage(output_image)
+    output_img_label.config(image=output_image_tk)
+    output_img_label.image = output_image_tk
+    print(classifier)
+    
 
 #Fenster Hauptschleife (PS_2022-12-12)
+tk.Button(root, text="Bild öffnen", command=file_open).place(x=150,y=50)
+tk.Button(root, text="Classifier anwenden", command=lambda: img_change("test")).place(x=550,y=50)
+
+input_img_label = ttk.Label(root)
+input_img_label.place(x=25,y=100)
+
+output_img_label = ttk.Label(root)
+output_img_label.place(x=425,y=100)
+
 root.mainloop()

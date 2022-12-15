@@ -4,6 +4,7 @@ from tkinter import filedialog
 import numpy as np
 import cv2
 from PIL import Image, ImageTk
+import random
 
 classifier_list = [
 "haarcascade_eye",
@@ -60,8 +61,9 @@ def img_change(classifier):
     output_image_cv = np.array(output_image.convert('RGB'))
     output_image_cv_gray = cv2.cvtColor(output_image_cv, cv2.COLOR_BGR2GRAY)
     cascade_results = cascade.detectMultiScale(output_image_cv_gray, scaleFactor=s1.get_val(), minNeighbors = s2.get_val(), minSize=(s3.get_val(), s3.get_val()))
+    color = (random.randint(0,255)*3)
     for (x,y,w,h) in cascade_results:
-        cv2.rectangle(output_image_cv,(x,y),(x+w,y+h),(255,0,0),2)
+        cv2.rectangle(output_image_cv,(x,y),(x+w,y+h),(color),2)
         roi_gray = output_image_cv_gray[y:y+h, x:x+w]
         roi_color = output_image_cv[y:y+h, x:x+w]
     

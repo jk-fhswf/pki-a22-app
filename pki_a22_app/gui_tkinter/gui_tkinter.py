@@ -10,7 +10,9 @@ classifier_list = [
 "haarcascade_eye",
 "haarcascade_frontalface_default",
 "haarcascade_mcs_mouth",
-"haarcascade_mcs_nose"
+"haarcascade_mcs_nose",
+"haarcascade_mcs_leftear",
+"haarcascade_mcs_rightear"
 ]
 
 #TKinter Fenster initialisieren (PS_2022-12-12)
@@ -61,19 +63,23 @@ def img_change(classifier):
     output_image_cv = np.array(output_image.convert('RGB'))
     output_image_cv_gray = cv2.cvtColor(output_image_cv, cv2.COLOR_BGR2GRAY)
     cascade_results = cascade.detectMultiScale(output_image_cv_gray, scaleFactor=s1.get_val(), minNeighbors = s2.get_val(), minSize=(s3.get_val(), s3.get_val()))
-    color = (random.randint(0,255)*3)
-    for (x,y,w,h) in cascade_results:
-        cv2.rectangle(output_image_cv,(x,y),(x+w,y+h),(color),2)
-        roi_gray = output_image_cv_gray[y:y+h, x:x+w]
-        roi_color = output_image_cv[y:y+h, x:x+w]
     
-    output_image = Image.fromarray(output_image_cv) #Image.open("pki_a22_app/gui_tkinter/Logo.jpg").resize((img_max_width,img_max_height), Image.ANTIALIAS)
+    if len(cascade_results) > 0:
+        color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
+        for (x,y,w,h) in cascade_results:
+            cv2.rectangle(output_image_cv,(x,y),(x+w,y+h),(color),2)
+            roi_gray = output_image_cv_gray[y:y+h, x:x+w]
+            roi_color = output_image_cv[y:y+h, x:x+w]
+        output_image = Image.fromarray(output_image_cv) #Image.open("pki_a22_app/gui_tkinter/Logo.jpg").resize((img_max_width,img_max_height), Image.ANTIALIAS)
+        output_img_label.image.paste(output_image)
+    else:
+        print("keine Übereinstimmung gefunden")
+    
+def output_image_restart():
+    global input_image
+    global output_image
+    output_image = input_image
     output_img_label.image.paste(output_image)
-    #print(s1.get_val(),s2.get_val(),s3.get_val())
-    #output_image_tk = ImageTk.PhotoImage(output_image)
-    #output_img_label.config(image=output_image_tk)
-    #output_img_label.image = output_image_tk
-    #print(path_haarcascade)
 
 #Class um Slider einfacher zu erstellen und abzufragen (PS_2022-12-14)
 class slider:    
@@ -100,18 +106,18 @@ class slider:
         return self.val.get()
     def slider_change(self, event):
         self.v.configure(text=f"{self.get_val():.1f}")
-        #message2.config(text=str(self.get_val()))
 
 #Fenster Hauptschleife (PS_2022-12-12)
 tk.Button(root, text="Bild aus Datei öffnen", command=file_open).place(x=150,y=150)
-tk.Button(root, text="Classifier anwenden", command=lambda: img_change(dropdown.get())).place(x=550,y=150)
+tk.Button(root, text="Classifier anwenden", command=lambda: img_change(dropdown.get())).place(x=500,y=150)
+tk.Button(root, text="==>", command=output_image_restart).place(x=385,y=350)
 
 dropdown = tk.StringVar(root)
 dropdown.set(classifier_list[0])
 dropdown_label = tk.OptionMenu(root, dropdown, *classifier_list)
-dropdown_label.place(x=550,y=20)
+dropdown_label.place(x=500,y=20)
 
-xpos_slider_window = 550
+xpos_slider_window = 500
 ypos_slider_window = 60
 s1 = slider("ScaleFactor",xpos_slider_window,ypos_slider_window,1.01,1.5,float)
 s1.s.set(1.1)

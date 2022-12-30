@@ -72,8 +72,9 @@ def img_change(classifier):
         output_image = Image.fromarray(output_image_cv) #Image.open("pki_a22_app/gui_tkinter/Logo.jpg").resize((img_max_width,img_max_height), Image.ANTIALIAS)
         output_img_label.image.paste(output_image)
     else:
-        print("keine Übereinstimmung gefunden") 
-    
+        print("keine Übereinstimmung gefunden")         
+
+#das Originalbild auf das Output Image übertragen zum Neustarten
 def output_image_restart():
     global input_image
     global output_image
@@ -107,15 +108,18 @@ class slider:
         self.v.configure(text=f"{self.get_val():.1f}")
 
 #Fenster Hauptschleife (PS_2022-12-12)
+#Buttons einbinden
 tk.Button(root, text="Bild aus Datei öffnen", command=file_open).place(x=150,y=150)
 tk.Button(root, text="Classifier anwenden", command=lambda: img_change(dropdown.get())).place(x=500,y=150)
 tk.Button(root, text="==>", command=output_image_restart).place(x=385,y=350)
 
+#Dropdown Menü einbinden und Classifier Liste laden
 dropdown = tk.StringVar(root)
 dropdown.set(classifier_list[0])
 dropdown_label = tk.OptionMenu(root, dropdown, *classifier_list)
 dropdown_label.place(x=500,y=20)
 
+#Slider einbinden und Preset Werte einstellen
 xpos_slider_window = 500
 ypos_slider_window = 60
 s1 = slider("ScaleFactor",xpos_slider_window,ypos_slider_window,1.01,1.5,float)
@@ -125,6 +129,7 @@ s2.s.set(4)
 s3 = slider("minSize",xpos_slider_window,ypos_slider_window+60,10,50)
 s3.s.set(30)
 
+#Bilder einbinden
 input_img_label = ttk.Label(root)
 input_img_label.place(x=25,y=175)
 

@@ -62,6 +62,7 @@ def img_change(classifier):
     output_image_cv = np.array(output_image.convert('RGB'))
     output_image_cv_gray = cv2.cvtColor(output_image_cv, cv2.COLOR_BGR2GRAY)
     cascade_results = cascade.detectMultiScale(output_image_cv_gray, scaleFactor=s1.get_val(), minNeighbors = s2.get_val(), minSize=(s3.get_val(), s3.get_val()))
+    iterations = 0
     
     if len(cascade_results) > 0:
         color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
@@ -72,7 +73,29 @@ def img_change(classifier):
         output_image = Image.fromarray(output_image_cv) #Image.open("pki_a22_app/gui_tkinter/Logo.jpg").resize((img_max_width,img_max_height), Image.ANTIALIAS)
         output_img_label.image.paste(output_image)
     else:
-        print("keine Übereinstimmung gefunden")         
+        flag = False
+        for i1 in np.arange (1.5, 0.9, -0.1):
+            for i2 in range (6, 2, -1):
+                for i3 in range (50, 9, -10):                 
+                    s1.s.set(i1)
+                    s2.s.set(i2)
+                    s3.s.set(i3)
+                    iterations = iterations + 1
+                    cascade_results = cascade.detectMultiScale(output_image_cv_gray, scaleFactor=s1.get_val(), minNeighbors = s2.get_val(), minSize=(s3.get_val(), s3.get_val()))
+                    if len(cascade_results) > 0:
+                        color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
+                        for (x,y,w,h) in cascade_results:
+                            cv2.rectangle(output_image_cv,(x,y),(x+w,y+h),(color),2)
+                            roi_gray = output_image_cv_gray[y:y+h, x:x+w]
+                            roi_color = output_image_cv[y:y+h, x:x+w]
+                        output_image = Image.fromarray(output_image_cv)
+                        output_img_label.image.paste(output_image)
+                        flag = True
+                        break
+                if flag: break
+            if flag: break
+        if len(cascade_results) == 0:
+            print(f"Kein Ergebnis nach {iterations} Iterationen")        
 
 #das Originalbild auf das Output Image übertragen zum Neustarten
 def output_image_restart():

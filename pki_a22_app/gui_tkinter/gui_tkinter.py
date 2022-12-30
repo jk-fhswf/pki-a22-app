@@ -5,15 +5,15 @@ import numpy as np
 import cv2
 from PIL import Image, ImageTk
 import random
+import os
 
-classifier_list = [
-"haarcascade_eye",
-"haarcascade_frontalface_default",
-"haarcascade_mcs_mouth",
-"haarcascade_mcs_nose",
-"haarcascade_mcs_leftear",
-"haarcascade_mcs_rightear"
-]
+#Haarcascade XML Dateien aus Ordner auslesen und in Liste laden (PS_2022_12_30)
+path_haarcascade = "pki_a22_app/gui_tkinter/"
+
+classifier_list = list()
+for file in os.listdir(path_haarcascade):
+    if file.endswith(".xml"):
+        classifier_list.append(file.rstrip(".xml"))
 
 #TKinter Fenster initialisieren (PS_2022-12-12)
 root = tk.Tk()
@@ -58,8 +58,7 @@ def file_open():
 def img_change(classifier):
     global input_image
     global output_image
-    path_haarcascade = "pki_a22_app/gui_tkinter/" + classifier + ".xml"
-    cascade = cv2.CascadeClassifier(path_haarcascade)
+    cascade = cv2.CascadeClassifier(path_haarcascade + classifier + ".xml")
     output_image_cv = np.array(output_image.convert('RGB'))
     output_image_cv_gray = cv2.cvtColor(output_image_cv, cv2.COLOR_BGR2GRAY)
     cascade_results = cascade.detectMultiScale(output_image_cv_gray, scaleFactor=s1.get_val(), minNeighbors = s2.get_val(), minSize=(s3.get_val(), s3.get_val()))

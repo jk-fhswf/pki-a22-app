@@ -73,7 +73,7 @@ def img_change(classifier):
         output_image = Image.fromarray(output_image_cv) #Image.open("pki_a22_app/gui_tkinter/Logo.jpg").resize((img_max_width,img_max_height), Image.ANTIALIAS)
         output_img_label.image.paste(output_image)
     else:
-        print("keine Übereinstimmung gefunden")
+        print("keine Übereinstimmung gefunden") 
     
 def output_image_restart():
     global input_image

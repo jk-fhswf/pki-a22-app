@@ -19,19 +19,21 @@ for file in os.listdir(path_haarcascade):
 root = tk.Tk()
 root.title('Projekt Gruppe a2-2 - Thema: Bilderkennung Haar-Cascades')
 
-#Fenster width x height (PS_2022-12-12)
-window_width = 800
-window_height = 600
-img_max_width = 350
-img_max_height = 350
-
-#Bildschirm Auslösung width x height (PS_2022-12-12)
+#Bildschirm Auslösung width x height (PS_2022-12-12) / AF (Ergänzung der dynamischen Fensterbreite)
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
+
+#Fenster width x height (PS_2022-12-12) / AF: Anpassung der Fensterbreite auf Bildschirmauflösung & der Darstellung
+window_width = int(screen_width * 0.8)
+window_height = int(screen_height * 0.8)
+
+img_max_width = int(window_width/2-75)
+img_max_height = int(window_height-300) 
 
 #Fenstermitte auf Bildschirmmitte (PS_2022-12-12)
 center_x = int(screen_width/2 - window_width / 2)
 center_y = int(screen_height/2 - window_height / 2)
+
 
 #Fenster ausrichten und Größe einstellen (PS_2022-12-12)
 root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
@@ -54,7 +56,7 @@ def file_open():
     output_img_label.config(image=output_image_tk)
     output_img_label.image = output_image_tk
 
-#Output Bild ändern mit Classifier (PS_2022-12-14)
+#Output Bild ändern mit Classifier (PS_2022-12-14) / AF: Slider automatisch anpassen um ein Ergebnis zu bekommenher 
 def img_change(classifier):
     global input_image
     global output_image
@@ -129,21 +131,37 @@ class slider:
         return self.val.get()
     def slider_change(self, event):
         self.v.configure(text=f"{self.get_val():.1f}")
-
+def blur_rectangle(classifier): #AF: Gausscher Weichzeichner
+    global input_image
+    global output_image
+    cascade = cv2.CascadeClassifier(path_haarcascade + classifier + ".xml")
+    output_image_cv = np.array(output_image.convert('RGB'))
+    output_image_cv_gray = cv2.cvtColor(output_image_cv, cv2.COLOR_BGR2GRAY)
+    cascade_results = cascade.detectMultiScale(output_image_cv_gray, scaleFactor=s1.get_val(), minNeighbors = s2.get_val(), minSize=(s3.get_val(), s3.get_val()))
+    if len(cascade_results) > 0:
+        for (x,y,w,h) in cascade_results:
+            face = output_image_cv[y:y+h, x:x+w]
+            face = cv2.GaussianBlur(face, (23, 23), 30)
+            output_image_cv[y:y+h, x:x+w] = face
+            
+        output_image = Image.fromarray(output_image_cv)
+        output_img_label.image.paste(output_image)
+            
+        
 #Fenster Hauptschleife (PS_2022-12-12)
 #Buttons einbinden
-tk.Button(root, text="Bild aus Datei öffnen", command=file_open).place(x=150,y=150)
-tk.Button(root, text="Classifier anwenden", command=lambda: img_change(dropdown.get())).place(x=500,y=150)
-tk.Button(root, text="==>", command=output_image_restart).place(x=385,y=350)
-
+tk.Button(root, text="Bild aus Datei öffnen", command=file_open).place(x=window_width/2-window_width/4,y=150)
+tk.Button(root, text="Classifier anwenden", command=lambda: img_change(dropdown.get())).place(x=window_width/2+window_width/4,y=150)
+tk.Button(root, text="==>", command=output_image_restart).place(x=window_width/2-12.5,y=window_height/2)
+tk.Button(root, text="Weichzeichnen",command=lambda: blur_rectangle(dropdown.get())).place(x=window_width/2+window_width/4+125,y=150)
 #Dropdown Menü einbinden und Classifier Liste laden
 dropdown = tk.StringVar(root)
 dropdown.set(classifier_list[0])
 dropdown_label = tk.OptionMenu(root, dropdown, *classifier_list)
-dropdown_label.place(x=500,y=20)
+dropdown_label.place(x=window_width/2-75,y=20)
 
 #Slider einbinden und Preset Werte einstellen
-xpos_slider_window = 500
+xpos_slider_window = window_width/2 -75
 ypos_slider_window = 60
 s1 = slider("ScaleFactor",xpos_slider_window,ypos_slider_window,1.01,1.5,float)
 s1.s.set(1.1)
@@ -154,10 +172,10 @@ s3.s.set(30)
 
 #Bilder einbinden
 input_img_label = ttk.Label(root)
-input_img_label.place(x=25,y=175)
+input_img_label.place(x=25,y=200)
 
 output_img_label = ttk.Label(root)
-output_img_label.place(x=425,y=175)
+output_img_label.place(x=window_width/2+50,y=200)
 
 fh_logo = Image.open("pki_a22_app/gui_tkinter/Logo.jpg")
 fh_logo = fh_logo.resize((300,100), Image.ANTIALIAS)

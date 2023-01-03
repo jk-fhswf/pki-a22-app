@@ -41,22 +41,35 @@ root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 #Fenstergroesse Änderung sperren (PS_2022-12-12)
 root.resizable(False, False)
 
-#Bild aus Datei öffnen (PS_2022-12-14)
+#Bild aus Datei öffnen (PS_2022-12-14 / AF: Image Ratio eingeführt, um Bilder nicht zu verzerren)
 def file_open():
     global input_image
     global output_image
     filename = filedialog.askopenfilename(filetypes=(("jpg files", "*.jpg"),("png files", "*.png")))
-    input_image = Image.open(filename).resize((img_max_width,img_max_height), Image.ANTIALIAS)
+    input_image = Image.open(filename)
+    width, height = input_image.size
+    aspect_ratio = width / height
+    if aspect_ratio > 1:  # Wenn das Bild breiter als hoch ist
+        new_width = img_max_width
+        new_height = int(new_width / aspect_ratio)
+    else:  # Bild is höher als breit
+        new_height = img_max_height
+        new_width = int(new_height * aspect_ratio)
+    input_image = input_image.resize((new_width,new_height), Image.ANTIALIAS)
     input_image_tk = ImageTk.PhotoImage(input_image)
     input_img_label.config(image=input_image_tk)
     input_img_label.image = input_image_tk
     
-    output_image = Image.open(filename).resize((img_max_width,img_max_height), Image.ANTIALIAS)
+    output_image = Image.open(filename)
+    output_image = output_image.resize((new_width,new_height), Image.ANTIALIAS)
     output_image_tk = ImageTk.PhotoImage(output_image)
     output_img_label.config(image=output_image_tk)
     output_img_label.image = output_image_tk
 
-#Output Bild ändern mit Classifier (PS_2022-12-14) / AF: Slider automatisch anpassen um ein Ergebnis zu bekommenher 
+
+
+
+#Output Bild ändern mit Classifier (PS_2022-12-14) / AF: Slider automatisch anpassen um ein Ergebnis zu bekommen 
 def img_change(classifier):
     global input_image
     global output_image
@@ -146,17 +159,23 @@ def blur_rectangle(classifier): #AF: Gausscher Weichzeichner
             
         output_image = Image.fromarray(output_image_cv)
         output_img_label.image.paste(output_image)
-            
+
+def save_jpg():
+    file_path = filedialog.asksaveasfilename(initialfile="output_image", filetypes=(("jpg files", "*.jpg"),("png files", "*.png")), defaultextension=".jpeg")
+    if file_path:
+        output_image.save(file_path)
+         
         
 #Fenster Hauptschleife (PS_2022-12-12)
 #Buttons einbinden
 tk.Button(root, text="Bild aus Datei öffnen", command=file_open).place(x=window_width/2-window_width/4,y=150)
 tk.Button(root, text="Classifier anwenden", command=lambda: img_change(dropdown.get())).place(x=window_width/2+window_width/4,y=150)
 tk.Button(root, text="==>", command=output_image_restart).place(x=window_width/2-12.5,y=window_height/2)
-tk.Button(root, text="Weichzeichnen",command=lambda: blur_rectangle(dropdown.get())).place(x=window_width/2+window_width/4+125,y=150)
+tk.Button(root, text="Weichzeichnen",command=lambda: blur_rectangle(dropdown.get())).place(x=window_width/2+window_width/4+122,y=150)
+tk.Button(root, text="Bild speichern",command=save_jpg).place(x=window_width/2+window_width/4+220,y=150)
 #Dropdown Menü einbinden und Classifier Liste laden
 dropdown = tk.StringVar(root)
-dropdown.set(classifier_list[0])
+dropdown.set(classifier_list[2])
 dropdown_label = tk.OptionMenu(root, dropdown, *classifier_list)
 dropdown_label.place(x=window_width/2-75,y=20)
 

@@ -9,11 +9,15 @@ import os
 
 #Haarcascade XML Dateien aus Ordner auslesen und in Liste laden (PS_2022_12_30)
 path_haarcascade = "pki_a22_app/gui_tkinter/"
+        
+def get_files_in_folder(path, filetype="xml"):
+    filelist = list()
+    for file in os.listdir(path):
+        if file.endswith("." + filetype):
+            filelist.append(file.rstrip("." + filetype))
+    return filelist
 
-classifier_list = list()
-for file in os.listdir(path_haarcascade):
-    if file.endswith(".xml"):
-        classifier_list.append(file.rstrip(".xml"))
+classifier_list = get_files_in_folder(path_haarcascade, "xml")
 
 #TKinter Fenster initialisieren (PS_2022-12-12)
 root = tk.Tk()

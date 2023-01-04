@@ -48,6 +48,10 @@ class WebcamSource(SourcesInterface):
 
             return av.VideoFrame.from_ndarray(result_img, format="bgr24")
 
+
         # This will show the webcam-UI elements in streamlit
         # Each frame gets sent to the callback method
-        webrtc_streamer(key="example", video_frame_callback=callback)
+        rtc_configuration={  # Add this config
+            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        }
+        webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration=rtc_configuration)

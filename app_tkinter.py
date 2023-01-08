@@ -24,7 +24,10 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 #Fenster width x height (PS_2022-12-12) / AF: Anpassung der Fensterbreite auf Bildschirmauflösung & der Darstellung
-window_width = int(screen_width * 0.8)
+if screen_width/screen_height < 1.8:
+    window_width = int(screen_width * 0.8)
+else: 
+    window_width = int(screen_height * (screen_width/2/screen_height)*0.8)
 window_height = int(screen_height * 0.8)
 
 img_max_width = int(window_width/2-75)
@@ -168,11 +171,11 @@ def save_jpg():
         
 #Fenster Hauptschleife (PS_2022-12-12)
 #Buttons einbinden
-tk.Button(root, text="Bild aus Datei öffnen", command=file_open).place(x=window_width/2-window_width/4,y=150)
-tk.Button(root, text="Classifier anwenden", command=lambda: img_change(dropdown.get())).place(x=window_width/2+window_width/4,y=150)
+tk.Button(root, text="Bild aus Datei öffnen", command=file_open).place(x=window_width*0.2,y=150)
+tk.Button(root, text="Classifier anwenden", command=lambda: img_change(dropdown.get())).place(x=window_width*0.4,y=150)
 tk.Button(root, text="==>", command=output_image_restart).place(x=window_width/2-12.5,y=window_height/2)
-tk.Button(root, text="Weichzeichnen",command=lambda: blur_rectangle(dropdown.get())).place(x=window_width/2+window_width/4+122,y=150)
-tk.Button(root, text="Bild speichern",command=save_jpg).place(x=window_width/2+window_width/4+220,y=150)
+tk.Button(root, text="Weichzeichnen",command=lambda: blur_rectangle(dropdown.get())).place(x=window_width*0.6, y=150)
+tk.Button(root, text="Bild speichern",command=save_jpg).place(x=window_width*0.8, y=150)
 #Dropdown Menü einbinden und Classifier Liste laden
 dropdown = tk.StringVar(root)
 dropdown.set(classifier_list[2])

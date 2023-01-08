@@ -8,7 +8,7 @@ import random
 import os
 
 #Haarcascade XML Dateien aus Ordner auslesen und in Liste laden (PS_2022_12_30)
-path_haarcascade = "pki_a22_app/gui_tkinter/"
+path_haarcascade = "resources/haarcascades" #"pki_a22_app/gui_tkinter/"
         
 def get_files_in_folder(path, filetype="xml"):
     filelist = list()
@@ -124,8 +124,27 @@ def output_image_restart():
     output_img_label.image.paste(output_image)
 
 #Class um Slider einfacher zu erstellen und abzufragen (PS_2022-12-14)
-class slider:    
+class slider:  
     def __init__(self,name,x_pos=0,y_pos=0,scale_from=0,scale_to=100,typ=int):
+        """This class enables easier setup of new sliders into Tkinter windows
+
+        Parameters
+        ----------
+        name : str
+            The name of the slider, will also appear as text label next to the slider
+        x_pos : int, optional
+            absolute x-Position in Pixels of the slider inside the Tkinter window, by default 0
+        y_pos : int, optional
+            absolute y-Position in Pixels of the slider inside the Tkinter window, by default 0
+        scale_from : int, optional
+            sets the minimum value of the slider, by default 0
+        scale_to : int, optional
+            sets the maximum value of the slider, by default 100
+        typ : _type_, optional
+            sets the type of the slider, by default int
+            if type of slider is int, then only integer values can be adjusted
+            for every other type the slider will show up floating numbers
+        """
         self.name = name
         self.x_pos = x_pos
         self.y_pos = y_pos
@@ -145,9 +164,26 @@ class slider:
         self.v = ttk.Label(root,text=f"{self.get_val():.1f}")
         self.v.place(x=self.x_pos+210,y=self.y_pos)
     def get_val(self):
+        """get_val gives easier access to the current value of the slider
+
+        Returns
+        -------
+        int
+            returns int value of the slider in case parameter typ == int
+        float
+            returns float value of the slider in case parater typ != int
+        """
         return self.val.get()
     def slider_change(self, event):
+        """in case of mainloop() triggers the event the slider value text is updated
+
+        Parameters
+        ----------
+        event : mainloop()
+            update slider value text
+        """
         self.v.configure(text=f"{self.get_val():.1f}")
+        
 def blur_rectangle(classifier): #AF: Gausscher Weichzeichner
     global input_image
     global output_image

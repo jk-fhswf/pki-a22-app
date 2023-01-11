@@ -1,4 +1,4 @@
-"""Impementation of a source-type to display a webcam stream and apply the Haar Cascade classifier on it"""
+"""Implementation of a source-type to display a webcam stream and apply the Haar Cascade classifier on it"""
 
 # Core Pkgs
 

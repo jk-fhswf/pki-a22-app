@@ -1,4 +1,4 @@
-"""Impementation of a source-type to select a video and apply the Haar Cascade classifier on it"""
+"""Implementation of a source-type to select a video and apply the Haar Cascade classifier on it"""
 
 # Core Pkgs
 

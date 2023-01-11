@@ -1,5 +1,5 @@
 """
-Contains a interface definition to use different source-types
+Contains an interface definition to use different source-types
 in the Streamlit dashboard
 """
 import abc

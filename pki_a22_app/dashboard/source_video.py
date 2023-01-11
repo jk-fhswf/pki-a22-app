@@ -56,7 +56,7 @@ class VideoSource(SourcesInterface):
         def create_player():
             return MediaPlayer("resources/videos/musk.mp4")
 
-        # This will show the webcam-UI elements in streamlit
+        # This will show the video-UI elements in Streamlit
         # Each frame gets sent to the callback method
         webrtc_streamer(key="videoexample",
                         video_frame_callback=callback,

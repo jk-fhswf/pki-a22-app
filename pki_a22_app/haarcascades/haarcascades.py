@@ -4,7 +4,8 @@ import cv2
 from cv2 import Mat
 import numpy.typing as npt
 
-def detect_objects(np_input_image: npt.ArrayLike, classifier_id: str, scale_factor: float = 1.1, min_neighbors: int = 4) -> Mat:
+
+def detect_objects(np_input_image: npt.ArrayLike, classifier_id: str, scale_factor: float = 1.1, min_neighbors: int = 4, min_size: int = 10) -> Mat:
     """
     Detects objects in an image using Haar Cascades classifiers. It can usa a preset of trained classifiers in resources/haarcascades/*.
     The found objects get highlighted by a rectangle around it.
@@ -41,16 +42,9 @@ def detect_objects(np_input_image: npt.ArrayLike, classifier_id: str, scale_fact
 
     img = cv2.cvtColor(np_input_image, 1)
     gray = cv2.cvtColor(np_input_image, cv2.COLOR_BGR2GRAY)
-    objects = classifier.detectMultiScale(gray, scale_factor, min_neighbors)
+    objects = classifier.detectMultiScale(
+        gray, scaleFactor=scale_factor, minNeighbors=min_neighbors, minSize=(min_size, min_size))
     # pylint: disable=invalid-name
     for (x, y, w, h) in objects:
-        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 4)
     return img, objects
-
-
-def show() -> None:
-    """
-    Dummy function that gets called initially
-    TODO: implement tKinter app
-    """
-    pass

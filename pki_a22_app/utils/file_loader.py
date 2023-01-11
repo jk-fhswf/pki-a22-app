@@ -33,6 +33,7 @@ def get_datasets() -> List[str]:
         List of available dataset
     """
     datasets = os.listdir(os.getcwd() + "/resources/datasets/")
+    datasets = [item for item in datasets if not item.startswith(".")]
     datasets.sort()
     return datasets
 
@@ -51,6 +52,7 @@ def get_images_of_dataset(dataset_name: str) -> List[str]:
     List[str]
         List of found images
     """
-    img_list = pathlib.Path(f"resources/datasets/{dataset_name}").glob('*.*')
+    extensions = ['.jpg', '.png', '.jpeg']
+    img_list = [x for x in pathlib.Path(f"resources/datasets/{dataset_name}").iterdir() if x.suffix.lower() in extensions]
     img_list = [str(item) for item in img_list]
     return list(img_list)

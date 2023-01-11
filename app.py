@@ -29,11 +29,15 @@ def main():
         stx.TabBarItemData(id=4, title="Webcam", description=""),
     ], default=1)
 
+    st.sidebar.image("resources/images/logo-fh-swf-300x93.png")
+    st.sidebar.markdown('#')
+    
     # Configure the algorithm controls
     classifiers: list = get_classifiers()
     classifier_id = st.sidebar.selectbox("Classifier", classifiers)
     scale_factor = st.sidebar.slider('Scale Factor', 1.0, 2.0, 1.1, 0.1)
-    min_neighbors = st.sidebar.slider('Min Neighbors', 1, 10, 5, 1)
+    min_neighbors = st.sidebar.slider('Min Neighbors', 1, 20, 5, 1)
+    min_size = st.sidebar.slider('Min Size', 10, 150, 30, 5)
 
     show_results = st.sidebar.button("RUN")
 
@@ -47,7 +51,7 @@ def main():
 
     # Execute selected source
     sources[chosen_id].load_source(
-        classifier_id, scale_factor,  min_neighbors, show_results)
+        classifier_id, scale_factor,  min_neighbors, min_size, show_results)
 
 
 if __name__ == '__main__':

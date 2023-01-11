@@ -1,4 +1,4 @@
-"""Impementation of a source-type that show multiple images at once"""
+"""Implementation of a source-type that show multiple images at once"""
 
 # Core Pkgs
 from itertools import cycle

@@ -33,7 +33,7 @@ def main():
     classifiers: list = get_classifiers()
     classifier_id = st.sidebar.selectbox("Classifier", classifiers)
     scale_factor = st.sidebar.slider('Scale Factor', 1.0, 2.0, 1.1, 0.1)
-    min_neighbors = st.sidebar.slider('Max Neighbors', 1, 10, 5, 1)
+    min_neighbors = st.sidebar.slider('Min Neighbors', 1, 10, 5, 1)
 
     show_results = st.sidebar.button("RUN")
 

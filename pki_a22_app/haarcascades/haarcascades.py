@@ -13,7 +13,7 @@ def detect_objects(np_input_image: npt.ArrayLike, classifier_id: str, scale_fact
     Parameters
     ----------
     np_input_image : npt.ArrayLike
-        The input impage
+        The input image
     classifier_id : str
         the classifier name. E.g. when you set it to "frontalface_default", the configuration file
         "haarcascade_frontalface_default.xml" will be loaded
@@ -50,7 +50,7 @@ def detect_objects(np_input_image: npt.ArrayLike, classifier_id: str, scale_fact
 
 def show() -> None:
     """
-    Dummy function that gets called initally
+    Dummy function that gets called initially
     TODO: implement tKinter app
     """
     pass

@@ -36,7 +36,7 @@ class WebcamSource(SourcesInterface):
         show_results : bool, optional
             If true we want to display the original images AND the results, by default False
         """
-        st.subheader("Webcam using WebRTC (peer2peer)")
+        st.subheader("Webcam processing using WebRTC (peer2peer)")
 
         def callback(frame):
             # convert frame to ndarray

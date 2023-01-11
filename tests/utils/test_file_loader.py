@@ -1,13 +1,15 @@
-import glob
-
-from pki_a22_app.utils.file_loader import get_classifiers, get_images_of_dataset
-
+from pki_a22_app.utils.file_loader import get_classifiers, get_datasets, get_images_of_dataset
 
 
 def test_get_classifiers():
     classifiers = get_classifiers()
-    assert len(classifiers) > 0
+    assert len(classifiers) > 0, "No classifiers found"
 
 def test_get_images():
     res = get_images_of_dataset("xfiles")
-    assert len(res) > 0
+    assert len(res) > 0, "No images in dataset found"
+    
+def test_get_datasets():
+    res = get_datasets()
+    assert len(res) > 0, "No datasets found"
+    

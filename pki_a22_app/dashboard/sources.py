@@ -18,14 +18,14 @@ class SourcesInterface(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
         """
-        Ensures that needed methods are implented in your derivatives
+        Ensures that needed methods are implemented in your derivatives
 
         Parameters
         ----------
         subclass : Any
             subclass that was created
 
-        Returns
+        Returns 
         -------
         Bool
             True if it is a valid subclass

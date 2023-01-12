@@ -5,7 +5,7 @@ from pki_a22_app.haarcascades.haarcascades import detect_objects
 
 
 def test_detect_objects():
-    image = Image.open('resources/datasets/XFiles/xfiles.0.jpg')
+    image = Image.open('resources/datasets/XFiles/img4.jpg')
     image_arr = asarray(image)
     img, found_objects = detect_objects(
         np_input_image=image_arr, classifier_id="eye", min_neighbors=5, scale_factor=1.1)

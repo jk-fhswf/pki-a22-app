@@ -6,7 +6,7 @@ def test_get_classifiers():
     assert len(classifiers) > 0, "No classifiers found"
 
 def test_get_images():
-    res = get_images_of_dataset("xfiles")
+    res = get_images_of_dataset("XFiles")
     assert len(res) > 0, "No images in dataset found"
     
 def test_get_datasets():

@@ -10,10 +10,12 @@ from pki_a22_app.haarcascades.haarcascades import detect_objects
 
 
 class UploadSource(SourcesInterface):
-    def load_source(self, classifier_id: str, scale_factor: int, min_neighbors: int, show_results: bool = False):
+    def load_source(self, classifier_id: str, scale_factor: int, min_neighbors: int, min_size: int, show_results: bool = False):
         """
         This method creates a form to upload an image that can be processed by the haar cascade classifier afterwards.
 
+        The parameter description was taken from: 
+        https://hackaday.io/project/12384-autofan-automated-control-of-air-flow/log/41956-face-detection-using-a-haar-cascade-classifier
 
         Parameters
         ----------
@@ -24,12 +26,14 @@ class UploadSource(SourcesInterface):
             determines the factor by which the detection window of the classifier is scaled down per detection pass. A factor of 1.1
             corresponds to an increase of 10%. Hence, increasing the scale factor increases performance, as the number of detection
             passes is reduced. However, as a consequence the reliability by which a face is detected is reduced. See:
-            https://hackaday.io/project/12384-autofan-automated-control-of-air-flow/log/41956-face-detection-using-a-haar-cascade-classifier
         min_neighbors : int, optional, by default 4
             determines the minimum number of neighboring facial features that need to be present to indicate the detection of a face by the
             classifier. Decreasing the factor increases the amount of false positive detections. Increasing the factor might lead to missing
             faces in the image. The argument seems to have no influence on the performance of the algorithm. See:
-            https://hackaday.io/project/12384-autofan-automated-control-of-air-flow/log/41956-face-detection-using-a-haar-cascade-classifier
+        min_size: int
+            determines the minimum size of the detection window in pixels. Increasing the minimum detection window increases performance. 
+            However, smaller faces are going to be missed then. In the scope of this project however a relatively big detection window can 
+            be used, as the user is sitting directly in front of the camera.
         show_results : bool, optional
             If true we want to display the original images AND the results, by default False
         """
@@ -52,7 +56,7 @@ class UploadSource(SourcesInterface):
         if show_results and classifier_id:
             # Actual object detection
             result_img, result_faces = detect_objects(
-                our_np_image, classifier_id, scale_factor, min_neighbors)
+                our_np_image, classifier_id, scale_factor, min_neighbors, min_size)
             image_location.image(result_img)
             st.text("Resulting Image")
             st.success(f"Found {len(result_faces)} Objects")

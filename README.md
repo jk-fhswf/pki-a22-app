@@ -9,6 +9,11 @@ Test2
 poetry export -f requirements.txt --output requirements.txt
 
 
+
+## Implementation with Streamlit
+
+![Streamlit Landing Page](doc/images/streamlit/2023-01-11-16-22-07.png)
+
 ## Live Demo
 
 The project is deployed on the Streamlit cloud:

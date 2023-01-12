@@ -22,10 +22,13 @@ class DatasetSource(SourcesInterface):
         Load multiple images and display results
     """
 
-    def load_source(self, classifier_id: str, scale_factor: int, min_neighbors: int, show_results: bool = False):
+    def load_source(self, classifier_id: str, scale_factor: int, min_neighbors: int, min_size: int, show_results: bool = False):
         """
         This method shows a selectbox to select an existing dataset. A dataset contains multiple images. The datasets are located
         at resource/datasets/. The Haar Cascade classifier will then be applied to all images of the dataset.
+
+        The parameter description was taken from: 
+        https://hackaday.io/project/12384-autofan-automated-control-of-air-flow/log/41956-face-detection-using-a-haar-cascade-classifier
 
         Parameters
         ----------
@@ -36,12 +39,14 @@ class DatasetSource(SourcesInterface):
             determines the factor by which the detection window of the classifier is scaled down per detection pass. A factor of 1.1
             corresponds to an increase of 10%. Hence, increasing the scale factor increases performance, as the number of detection
             passes is reduced. However, as a consequence the reliability by which a face is detected is reduced. See:
-            https://hackaday.io/project/12384-autofan-automated-control-of-air-flow/log/41956-face-detection-using-a-haar-cascade-classifier
         min_neighbors : int, optional, by default 4
             determines the minimum number of neighboring facial features that need to be present to indicate the detection of a face by the
             classifier. Decreasing the factor increases the amount of false positive detections. Increasing the factor might lead to missing
             faces in the image. The argument seems to have no influence on the performance of the algorithm. See:
-            https://hackaday.io/project/12384-autofan-automated-control-of-air-flow/log/41956-face-detection-using-a-haar-cascade-classifier
+        min_size: int
+            determines the minimum size of the detection window in pixels. Increasing the minimum detection window increases performance. 
+            However, smaller faces are going to be missed then. In the scope of this project however a relatively big detection window can 
+            be used, as the user is sitting directly in front of the camera.
         show_results : bool, optional
             If true we want to display the original images AND the results, by default False
         """
@@ -52,26 +57,29 @@ class DatasetSource(SourcesInterface):
         datasets.insert(0, "None")
         dataset_selection = st.selectbox("Dataset", datasets)
 
+        img_width = 300
+        img_columns = 2
+
         # When a dataset was selected start presenting it
         if dataset_selection and dataset_selection != "None":
             images_in_ds = get_images_of_dataset(dataset_selection)
             
             # Show images in max n columns
-            cols = cycle(st.columns(4))
+            cols = cycle(st.columns(img_columns))
             for idx, filtered_image in enumerate(images_in_ds):
-                next(cols).image(str(filtered_image), width=150)
+                next(cols).image(str(filtered_image), width=img_width)
 
             # We were requested to show the results
             if show_results and dataset_selection:
                 images_in_ds = get_images_of_dataset(dataset_selection)
-                st.write("Results:")
-                cols = cycle(st.columns(4))
+                st.write("### Results:")
+                cols = cycle(st.columns(img_columns))
 
                 for idx, filtered_image in enumerate(images_in_ds):
                     ds_image = Image.open(filtered_image)
                     ds_np_image = np.array(ds_image.convert('RGB'))
                     # Actual object detection
                     ds_res_image, ds_result_faces = detect_objects(ds_np_image, classifier_id, scale_factor,
-                                                                   min_neighbors)
+                                                                   min_neighbors, min_size)
                     col = next(cols)
-                    col.image(ds_res_image, width=150, caption=f"{len(ds_result_faces)} objects")
+                    col.image(ds_res_image, width=img_width, caption=f"{len(ds_result_faces)} objects")

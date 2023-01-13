@@ -5,10 +5,15 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "cSpell.words": [
+        "Oranisatorischen",
         "Streamlit"
     ],
+    "cSpell.language": "en,de-de",
     "conventionalCommits.scopes": [
         "Streamlit",
         "General"
+    ],
+    "cSpell.enableFiletypes": [
+        "latex"
     ]
 }

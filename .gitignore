@@ -221,3 +221,4 @@ ENV/
 *.bbl
 *.gz
 *.dvi
+*.out

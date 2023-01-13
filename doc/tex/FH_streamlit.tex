@@ -6,7 +6,7 @@
 \bibliography{literatur}
 \usepackage{listings}
 \usepackage{hyperref}
-
+\usepackage{float}
 \usepackage{xcolor}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -117,9 +117,9 @@ unter anderem nutzten für:
 \item Wireframes
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
- 	\includegraphics[scale=0.40]{../images/miro_board.png}
+ 	\includegraphics[scale=0.25]{../images/miro_board.png}
  	\caption{Miro-Board für organisatorische Aufgaben}
 	\end{center}
 \end{figure}
@@ -130,32 +130,50 @@ Um gemeinsam am Programmcode arbeiten zu können, haben wir uns ein Git-basierte
 Codeverwaltungs-Tool entschieden. Hierfür haben wir auf GitHub ein eigenes
 \href{https://github.com/jk-fhswf/pki-a22-app}{Git-Repository} eingerichtet.
 
-\begin{figure}[h]
+
+\begin{figure}[H]
 	\begin{center}
- 	\includegraphics[scale=0.40]{../images/ci_git.png}
+ 	\includegraphics[scale=0.25]{../images/ci_git.png}
  	\caption{Git-Repository auf GitHub}
 	\end{center}
 \end{figure}
 
-Zur Qualitätssicherung haben wir uns dafür entschieden, für den Main-Branch
+Zur Qualitätssicherung haben wir uns dafür entschieden, für den main-Branch
 Pull-Requests zu verwenden und die Erfolgreiche Ausführung eines GitHub-Actions-
 Workflows für Unit-Tests vorauszusetzen.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
- 	\includegraphics[scale=0.40]{../images/ci_protection.png}
+ 	\includegraphics[scale=0.25]{../images/ci_protection.png}
  	\caption{Konfiguration von QA-Optionen}
 	\end{center}
 \end{figure}
 
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
- 	\includegraphics[scale=0.40]{../images/ci_actions.png}
+ 	\includegraphics[scale=0.25]{../images/ci_actions.png}
  	\caption{Beispiel Ausführung von Tests mit pytest}
 	\end{center}
 \end{figure}
 
+\section{Anhang Streamlit Code}
+
+
+\lstinputlisting[caption=app.py, language=Python]{../../app.py}
+\lstinputlisting[caption=haarcascades/haarcascades.py, language=Python]{../../pki_a22_app/haarcascades/haarcascades.py}
+\newpage
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{input_sources.png}
+	\caption{UML Diagramm für unterschiedliche Source-Typen}
+\end{figure}
+\lstinputlisting[caption=dashboard/sources.py, language=Python]{../../pki_a22_app/dashboard/sources.py}
+\lstinputlisting[caption=dashboard/source upload.py, language=Python]{../../pki_a22_app/dashboard/source_upload.py}
+\lstinputlisting[caption=dashboard/source dataset.py, language=Python]{../../pki_a22_app/dashboard/source_dataset.py}
+\lstinputlisting[caption=dashboard/source video.py, language=Python]{../../pki_a22_app/dashboard/source_video.py}
+\lstinputlisting[caption=dashboard/source webcam.py, language=Python]{../../pki_a22_app/dashboard/source_webcam.py}
+\lstinputlisting[caption=utils/file loader.py, language=Python]{../../pki_a22_app/utils/file_loader.py}
 
 
 \end{document}

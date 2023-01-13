@@ -8,6 +8,7 @@
         "Streamlit"
     ],
     "conventionalCommits.scopes": [
-        "Streamlit"
+        "Streamlit",
+        "General"
     ]
 }

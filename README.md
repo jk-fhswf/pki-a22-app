@@ -1,40 +1,66 @@
 # Haar Cascade Evaluation Apps with Streamlit and Tkinter
 
 
-In this project we developed an object detection App using Haar Cascade classifier in two different ways: one as web dashboard with [Streamlit](https://streamlit.io/) and one as desktop app using Tkinter. 
+In this project we developed an object detection App using Haar Cascade classifier in two different ways: one as web dashboard with [Streamlit](https://streamlit.io/) and one as desktop app using [Tkinter](https://docs.python.org/3/library/tkinter.html). 
 
-Here is a [demo](https://jk-fhswf-pki-a22-app-app-codcuk.streamlit.app/) of the Streamlit app deployed on the Streamlit cloud platform.
+You can find a [demo](https://jk-fhswf-pki-a22-app-app-codcuk.streamlit.app/) of the Streamlit app deployed on the [Streamlit cloud platform](https://streamlit.io/cloud).
 
-### TODO: (Screenshot of apps)
+&nbsp;
+<div align="center">
 
-### Installing
+**Streamlit Application:**
 
-We generally recommend installing the library inside a virtual environment
+<img src="doc/images/streamlit/video_example.png" width="500">
+
+</br>
+</br>
+
+**Tkinter Application:**
+
+<img src="doc/images/tkinter_example.png" width="500">
+
+</div>
+
+## Installation
+
+We generally recommend installing the library inside a virtual environment. In your virtual environment install
+the required dependencies:
 
 ```
-pip install git+https://github.com/jk-fhswf/pki-a22-app.git
+pip install -r packages.txt
 ```
 
-### Executing program
+Or if you already have the package manager [poetry](https://python-poetry.org/) simply run
+```
+poetry install
+```
+
+This will create a virtual environment in the folder **.venv** for you.
+
+## Run
 
 The Streamlit app can be executed using the streamlit module: 
 ```
 stremlit run app.py
 ```
+This will start a local webserver and serve the dashboard under [http://localhost:8501](http://localhost:8501)
 
+</br>
 For starting the Tkinter app use:
 
 ```
 python app_tkinter.py
 ```
 
-# Development
+## Development
 
-## Prerequisites
+### Prerequisites
 
 We use [poetry](https://python-poetry.org/) as package manager. Please make sure to have poetry installed before.
 
-## Dependencies
+</br>
+
+### Dependencies
 
 To setup a virtual environment with all necessary dependencies use the poetry package manager:
 
@@ -44,58 +70,46 @@ poetry install
 
 This will create a virtual environment inside the folder ".venv". 
 
+</br>
+
 ### Development Environment
 
 All common development environments for python support the poetry package manager by default. We used Pycharm and VSCode.
 
-## Export requirements file
+</br>
+
+### Export requirements file
 
 If you want to use a different virtual environment you can export the dependencies using:
 ```
-poetry export -f requirements.txt --output requirements.txt
+poetry export -f requirements.txt --output packages.txt
 ```
+Note: we do not use the default name "requirements.txt" since this will interfere with the requirements defined in poetry.lock when deploying to the streamlit cloud platform.
 
-
-## Implementation with Streamlit
-
-![Streamlit Landing Page](doc/images/streamlit/2023-01-11-16-22-07.png)
-
-## Live Demo
-
-The project is deployed on the Streamlit cloud:
-
-https://jk-fhswf-pki-a22-app-app-codcuk.streamlit.app/
-
+</br>
 
 ## Authors
 
-The project was developed by the following persons.
+The project was developed by the following persons:
 
-TODO: email-addressen
 
-Tkinter:
 * Alexander Fuchs
 * Onur Yilmaz
 * Peter Spanke
-
-Streamlit:
 * Johannes-Peter Kübert
 
-Documentation
-* Onur Yilmaz
 
-## License
+</br>
+
+### License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT)
 
-## References
+</br>
 
-TODO
+### References
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+
+* [streamlit](https://streamlit.io/)
+* [sreamlit-webrtc](https://github.com/whitphx/streamlit-webrtc)
 

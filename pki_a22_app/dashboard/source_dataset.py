@@ -77,7 +77,7 @@ class DatasetSource(SourcesInterface):
 
                 for idx, filtered_image in enumerate(images_in_ds):
                     ds_image = Image.open(filtered_image)
-                    ds_np_image = np.array(ds_image.convert('RGB'))
+                    ds_np_image = np.array(ds_image.convert("RGB"))
                     # Actual object detection
                     ds_res_image, ds_result_faces = detect_objects(ds_np_image, classifier_id, scale_factor,
                                                                    min_neighbors, min_size)

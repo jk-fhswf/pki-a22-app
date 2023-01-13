@@ -41,13 +41,13 @@ class UploadSource(SourcesInterface):
 
         # Show the upload form
         image_file = st.file_uploader(
-            "Upload Image", type=['jpg', 'png', 'jpeg'])
+            "Upload Image", type=["jpg", "png", "jpeg"])
         our_image = None
 
         # If a image was uploaded, display it
         if image_file is not None:
             our_image = Image.open(image_file)
-            our_np_image = np.array(our_image.convert('RGB'))
+            our_np_image = np.array(our_image.convert("RGB"))
             st.text("Original Image")
             st.image(our_image)
             image_location = st.empty()

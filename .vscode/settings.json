@@ -6,5 +6,8 @@
     "python.testing.pytestEnabled": true,
     "cSpell.words": [
         "Streamlit"
+    ],
+    "conventionalCommits.scopes": [
+        "Streamlit"
     ]
 }

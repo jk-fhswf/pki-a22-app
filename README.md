@@ -112,4 +112,5 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 * [streamlit](https://streamlit.io/)
 * [sreamlit-webrtc](https://github.com/whitphx/streamlit-webrtc)
+* [hackaday face detection](https://hackaday.io/project/12384-autofan-automated-control-of-air-flow/log/41956-face-detection-using-a-haar-cascade-classifier)
 

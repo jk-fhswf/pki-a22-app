@@ -38,7 +38,7 @@ def detect_objects(np_input_image: npt.ArrayLike, classifier_id: str, scale_fact
     """
 
     classifier = cv2.CascadeClassifier(
-        f'resources/haarcascades/haarcascade_{classifier_id}.xml')
+        f"resources/haarcascades/haarcascade_{classifier_id}.xml")
 
     img = cv2.cvtColor(np_input_image, 1)
     gray = cv2.cvtColor(np_input_image, cv2.COLOR_BGR2GRAY)

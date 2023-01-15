@@ -35,7 +35,7 @@ def main():
     # Configure the algorithm controls
     classifiers: list = get_classifiers()
     classifier_id = st.sidebar.selectbox("Classifier", classifiers)
-    scale_factor = st.sidebar.slider('Scale Factor', 1.0, 2.0, 1.1, 0.1)
+    scale_factor = st.sidebar.slider('Scale Factor', 1.0, 2.0, 1.1, 0.05)
     min_neighbors = st.sidebar.slider('Min Neighbors', 1, 20, 5, 1)
     min_size = st.sidebar.slider('Min Size', 10, 150, 30, 5)
 

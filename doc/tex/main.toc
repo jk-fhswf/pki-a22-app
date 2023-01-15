@@ -1,0 +1,17 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {section}{\numberline {1}Einführung - Haar Cascades}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Funktionsweise: Haar-like Features}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Umsetzung in OpenCV}{5}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Implementation in Tkinter}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Standardaufbau einer Tkinter-App}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Haar-Cascade - Tkinter-App}{6}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Packages}{6}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Initialisierung und Geometrie}{7}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}Bild öffnen und Klassifizierer anwenden}{7}{subsubsection.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.4}Slider und Button}{9}{subsubsection.2.2.4}%
+\contentsline {section}{\numberline {3}Implementierung mit Streamlit }{12}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Eingabequellen}{12}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Optionen}{13}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Code}{13}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Organisation}{28}{section.4}%
+\contentsline {section}{\numberline {5}Continuous Integration}{29}{section.5}%

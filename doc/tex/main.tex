@@ -1,16 +1,42 @@
 \documentclass{article}
 
+
 \usepackage[T1]{fontenc} 
 \usepackage[ngerman]{babel}
 \usepackage{graphicx}
-\bibliography{literatur}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true,
+	citecolor    = blue
+}
+
+\newcommand*{\figref}[2][]{%
+	\hyperref[{fig:#2}]{%
+		Abbildung~\ref*{fig:#2}%
+		\ifx\\#1\\%
+		\else
+		\,#1%
+		\fi
+	}%
+}
+
+\usepackage[
+backend=biber,
+style=alphabetic,
+]{biblatex}
+\addbibresource{literatur.bib}
+
+
 \usepackage{listings}
+
 
 \usepackage{xcolor}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codeorange}{rgb}{1,0.49,0}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.96}
+
 
 \lstdefinestyle{mystyle}{
 	backgroundcolor=\color{backcolour},   
@@ -35,8 +61,9 @@
 \lstset{style=mystyle}
 	
 \begin{document}
+
 \title{Programmierung für KI \\ Projektausarbeitung - Haar Cascades}
-\author{Peter, Johannes Peter, Alexander Fuchs, Onur Yilmaz}
+\author{Onur Yilmaz, Alexander Fuchs, Johannes-Peter Kübert, Peter Spanke}
 \date{\today}
 \maketitle
 \newpage
@@ -44,43 +71,108 @@
 	\vspace{2cm} %Add a 2cm space
 
 \newpage
-	
+\textbf{[Ausarbeitung - Onur]}
 \section*{Einleitung}
-Im Rahmen der Veranstaltung - \textit{Programmierung für KI}, haben wir das Thema \textbf{Haar Cascades}, als gemeinsam zu bearbeitendes Projekt erhalten. Haar Cascades beschreibt ein Verfahren bzw. einen Algorithmus, welches bestimmte Merkmale oder Muster in Bildern oder Videos erkennen kann.
+Im Rahmen der Veranstaltung - \textit{Programmierung für KI}, haben wir das Thema \textbf{Haar Cascades}, als gemeinsam zu bearbeitendes Projekt erhalten. Haar Cascades beschreiben ein Verfahren bzw. einen Algorithmus, welches bestimmte Merkmale oder Muster in Bildern oder Videos erkennen kann.
 \\ \\
 Ziel dieses Projektes ist es nun ein solches Verfahren zu implementieren und eine passende graphische Benutzeroberfläche in Python bereitzustellen. Nach einer kurzen theoretischen Einführung in das Thema, teilt sich die Arbeit in zwei Teile auf. 
-Der erste Teil beschäftigt sich mit der Erstellung einer graphischen Benutzeroberfläche mit Hilfe von \textbf{Tkinter} und der zweite Teil mit \textbf{steamlit}.
+Der erste Teil beschäftigt sich mit der Erstellung einer graphischen Benutzeroberfläche mit Hilfe von \textbf{Tkinter} und der zweite Teil wiederum mit \textbf{streamlit}.
 \\ \\
-Schrittweise werden wir auf die einzelnen Python Codes eingehen und diese näher erläutern. Des Weiteren werden wir kennzeichnen, welche Codeblock genau, welchem Projektteilnehmer zuzuordnen sind.
+Schrittweise werden wir die einzelnen Python Codes hier darstellen und kennzeichnen, welche Codes genau, welchem Projektteilnehmer zuzuordnen sind. Für die Funktionalitäten der Programmcodes sind auf die Kommentare des beigefügten Programm Codes hingewiesen.
 
 \section{Einführung - Haar Cascades}
 
-Wie bereits oben erwähnt sind Haar Cascades \footnote{ Rapid object detection using a boosted cascade of simple features und Viola, Jones: Robust Real-time Object Detection, IJCV 2001, zurück zu führen auf \textit{Paul Viola} und \textit{Michael Jones}} ein Verfahren zur Erkennung von Objekten in Bildern und Videos. Genauer handelt es sich hierbei um einen Klassifikationsalgorithmus, welches Beispielbilder trainiert, die entweder das zu erkennende Muster oder Objekt enthalten oder nicht. Anschließend kann der Haar Cascade dann auf neue Bilder oder Videos angewendet werden und versucht, das gesuchte Muster oder Objekt darin wieder zu erkennen.
+Wie bereits oben erwähnt, sind Haar Cascades \footnote{ Rapid object detection using a boosted cascade of simple features und Viola, Jones: Robust Real-time Object Detection, IJCV 2001, zurück zu führen auf \textit{Paul Viola} und \textit{Michael Jones}} ein Verfahren zur Erkennung von Objekten in Bildern und Videos. Genauer handelt es sich hierbei um einen Klassifikationsalgorithmus, welches Beispielbilder trainiert, die entweder das zu erkennende Muster bzw. Objekt enthalten oder nicht. Anschließend kann der Haar Cascade dann auf neue Bilder oder Videos angewendet werden und versuchen, das gesuchte Muster oder Objekt darin wieder zu erkennen (siehe \cite{first} und \cite{second}).
 
 \subsection{Funktionsweise: Haar-like Features}
-Aus den Bildern als Eingangsdaten werden so genannte Haar-like Features
-als Merkmale extrahiert. Für diese Merkmale werden rechteckige Bereiche
-im Bild zusammengefasst.
-
-\begin{figure}
+Aus den Bildern der Eingangsdaten, werden für den Klassifikationsalgorithmuss nun die richtigen Merkmale (im engl. \textit{Feature}) extrahiert und trainiert. 
+Hierbei benötigt man eine relativ große Trainingsmenge an positiven und negativen Graustufenbildern.\footnote{Genauer handelt es sich hierbei um normierte Graustufenbilder} 
+\newline \\
+Für die Merkmals-Extraktion werden nun rechteckige Bereiche (siehe \figref{haar1}) an einem Bild abgetastet. Hierfür gibt es sogenannte Kantenmerkmale ((1) und (2)), Linienmerkmale (3) und vier-rechteckige Merkmale (4).
+\newpage
+\begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.7\linewidth]{foto1}
+	\includegraphics[width=0.6\linewidth]{haar1}
 	\caption{Haar-like Features}
-	\label{fig:foto1}
+	\label{fig:haar1}
 \end{figure}
-
-
+\ \\
+Um z.B. die Augen einer Person zu detektieren, stellen wir zunächst einmal fest, dass die Augen öfters dunkler sind, als andere Regionen im Gesicht. Hierzu verwenden wir dann das Feature (2) aus \figref{haar1}.
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{irina_sheyk}
+		\label{fig:sub1}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{irina_haar_cascade}
+		\label{fig:sub2}
+	\end{subfigure}
+	\caption{Anwendung eines Haar-like Features}
+	\label{fig:test}
+\end{figure}
+\ \\
+Für alle Pixelwerte, z.B. normierte Helligkeitswerte, eines hellen bzw. dunklen Rechtecks wird der Durchschnitt gebildet und darauf hin die Werte der hellen und dunklen Rechtecke voneinander abgezogen \cite{drei}. \\ \\
+Um zu ermitteln, welche Haar-like Features mit Form und Größe nun am
+aussagekräftigsten sind,  gibt es den sogenannten
+\textbf{Adaboost}-Algorithmus\footnote{AdaBoost (adaptives Boosting) ist ein Algorithmus für das Ensemble-Lernen, der für die Klassifikation oder Regression verwendet werden kann} 
+Es wählt aus den vielen möglichen Merkmalen diejenigen aus, die die beste Unterscheidung zwischen einer Menge an Positiv- und Negativbeispielen von Mustern liefern und trainiert gleichzeitig den Klassifikator \cite{drei}.
 \newpage
 \subsection{Umsetzung in OpenCV}
-Für unseren Anwendungsfall ist es mit Hilfe von OpenCV nicht notwendig einen eigenen Haar Cascade  Algorithmus anzulernen. Wir laden die XML-Datei mit den zugehörigen \textit{Haar-like-Features}, die wir verwenden möchten. Diese XML-Dateien enthalten Informationen darüber, wie die Features bzw. Merkmale aussehen und wie sie auf Bilder angewendet werden sollen. 
-
-
-
-\newpage
+Für unseren Anwendungsfall ist es mit Hilfe von OpenCV nicht notwendig einen eigenen Haar Cascade  Algorithmus anzulernen. Wir laden die XML-Datei mit den zugehörigen \textit{Haar-like-Features}, die wir verwenden möchten. Diese XML-Dateien enthalten dann anschließend Informationen darüber, wie die Features aussehen und wie sie auf Bilder angewendet werden sollen. 
+\ \\ 
 \section{Implementation in Tkinter}
-Um den Code möglichst lesbar zu gestalten, teilen wir diesen im Folgenden in mehreren kleinen Blöcke auf.
-\subsection{Packages}
+\subsection{Standardaufbau einer Tkinter-App}
+\textbf{[Onur]}
+\begin{lstlisting}[language=Python, label = {lst:code}, mathescape= true]
+import tkinter as tk
 
+def druecke_knopf():
+	label.config(text="Button gedrueckt!")
+
+root = tk.Tk()
+root.geometry("1200x800") 
+root.title('Projekt Gruppe a2-2 - Thema: Bilderkennung Haar-Cascades')
+
+button = tk.Button(root, text="Drueck mich", command=druecke_knopf)
+button.pack()
+
+label = tk.Label(root, text="Hallo Welt!")
+label.pack()
+
+root.mainloop()
+
+\end{lstlisting}
+Der obige Code erzeugt die recht simple Tkinter-Applikation mit einem Button und einem Label. Es sei hier auf \cite{vier} verwiesen.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\linewidth]{foto1}
+	\caption{Einfache Tkinter App }
+	\label{fig:Tkinter App - Auszug}
+\end{figure}
+\ \\ 
+Zunächst einmal müssen wir Tkinter-Bibliothek importieren, welche essentiell für unsere App ist. 
+\\ \\ 
+Das Hauptfester wird mit dem Befehl
+\begin{lstlisting}[language=Python]
+	root = tk.Tk()
+\end{lstlisting}
+erzeugt und mit 
+\begin{lstlisting}[language=Python]
+	root.mainloop()
+\end{lstlisting}
+'beendet'. \\ \\ Letzteres trifft jedoch in Wirklichkeit nicht ganz zu, da wir uns in einer Endlosschleife befinden, welche nur dafür zuständig ist, darauf zu warten, bis der Benutzer auf etwas klickt \cite{vier}. Wenn der Benutzer schließlich dann auf einen Button klickt, wird ein Ereignis bzw. eine Funktion durchgeführt und anschließend wieder in die Endlosschleife versetzt.
+\\ \\
+Darüber hinaus können wir die Geometrie und Titel der App anpassen (siehe Zeile 7 und 8). 
+\\ \\
+In der obigen Anwendung haben wir einen Button und ein Label Modul aus der Tkinter-Bibliothek eingebaut. Die Referenzierung zu der Funktion erfolgt dann anschließend durch die \textit{command-Option}. Die Methode \textit{.pack()} von Tkinter kümmert sich um eine automatische Anordnung von Widgets, sprich Button, Labels, etc. im Fenster (root) zu verwalten.
+\ \\ \\
+\subsection{Haar-Cascade - Tkinter-App}
+Um den Code möglichst lesbar zu gestalten, teilen wir im Folgenden, diesen in mehreren kleinen Blöcke auf.
+\subsubsection{Packages}
+\textbf{[Alle]}
 \begin{lstlisting}[language=Python, label = {lst:code}, mathescape= true]
 import tkinter as tk
 from tkinter import ttk
@@ -102,7 +194,8 @@ classifier_list = get_classifiers()
 %Hier schreibe auf bzgl. den wichtigsten import 
 % und füge hier die requirement.txt ein
 
-\subsection{Initialisierung und Geometrie}
+\subsubsection{Initialisierung und Geometrie}
+\textbf{[Alle]}
 \begin{lstlisting}[language=Python]
 root = tk.Tk()
 root.title('Projekt Gruppe a2-2 - Thema: Bilderkennung Haar-Cascades')
@@ -134,8 +227,8 @@ root.resizable(False, False)
 % Hier legen wir die Größe der Tkinter App fest
 % Außerdem haben wir hier eine angepasste Version der Fenster Höhe/Breite für verschiedene OS
 
-\newpage
-\subsection{Bild öffnen und Klassifizierer anwenden}
+\subsubsection{Bild öffnen und Klassifizierer anwenden}
+\textbf{[Peter]}
 \begin{lstlisting}[language=Python]
 def file_open():
 	global input_image
@@ -165,8 +258,8 @@ def file_open():
 % Funktionen um ein beliebiges Bild im png oder jpg Format zu öffnen
 % (aspect_ratio) --> Anzeige des Bildes erfolgt im richtigen Seitenverhältnis, erneut
 % angepasst an der Fensterbreite und Höhe
-
-
+\ \\
+\textbf{[Peter und Alexander]}
 \begin{lstlisting}[language=Python]
 def img_change(classifier):
 	global input_image
@@ -211,8 +304,7 @@ def img_change(classifier):
 				print(f"Kein Ergebnis nach {iterations} Iterationen")          
 \end{lstlisting}
 
-
-
+\textbf{[Peter]}
 \begin{lstlisting}[language=Python]
 def output_image_restart():
 	global input_image
@@ -220,9 +312,9 @@ def output_image_restart():
 	output_image = input_image
 	output_img_label.image.paste(output_image)
 \end{lstlisting}
-
-
-\subsection{Slider und Button}
+\ \\ 
+\textbf{[Peter]}
+\subsubsection{Slider und Button}
 \begin{lstlisting}[language=Python]
 class slider:    
 	def __init__(self,name,x_pos=0,y_pos=0,scale_from=0,scale_to=100,typ=int):
@@ -251,8 +343,8 @@ class slider:
 \end{lstlisting}
 
 % da nicht absehbar war, wie viele Slider am Ende benutzt wurde hier eine Klasse verwendet.
-
-
+\ \\ 
+\textbf{[Alexander]}
 \begin{lstlisting}[language=Python]
 def blur_rectangle(classifier):
 	global input_image
@@ -274,7 +366,10 @@ def save_jpg():
 	file_path = filedialog.asksaveasfilename(initialfile="output_image", filetypes=(("jpg files", "*.jpg"),("png files", "*.png")), defaultextension=".jpeg")
 	if file_path:
 		output_image.save(file_path)
-
+\end{lstlisting}
+\ \\
+\textbf{[Peter]}
+\begin{lstlisting}[language=Python]
 tk.Button(root, text="Bild aus Datei oeffnen", command=file_open).place(x=window_width/2-window_width/4,y=150)
 tk.Button(root, text="Classifier anwenden", command=lambda: img_change(dropdown.get())).place(x=window_width/2+window_width/4,y=150)
 tk.Button(root, text="==>", command=output_image_restart).place(x=window_width/2-12.5,y=window_height/2)
@@ -311,9 +406,9 @@ ttk.Label(root, image=fh_logo_tk).place(x=0,y=0)
 root.mainloop()	
 \end{lstlisting}
 
+\include{streamlit.tex}
 
 \newpage
-
-\include{FH_streamlit.tex}
-
+ 
+\printbibliography
 \end{document}

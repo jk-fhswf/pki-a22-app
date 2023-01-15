@@ -20,6 +20,13 @@ You can find a [demo](https://jk-fhswf-pki-a22-app-app-codcuk.streamlit.app/) of
 
 </div>
 
+
+## Documentation
+
+The  paper to this project is available as [PDF-file](doc/tex/main.pdf) under "doc/tex/main.pdf".
+<div align="center">
+    <img src="doc/images/documentation.png" width="500">
+</div>
 ## Installation
 
 We generally recommend installing the library inside a virtual environment. In your virtual environment install

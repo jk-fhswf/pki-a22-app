@@ -222,3 +222,5 @@ ENV/
 *.gz
 *.dvi
 *.out
+*.bcf
+doc/tex/main.run.xml

@@ -27,6 +27,7 @@ The  paper to this project is available as [PDF-file](doc/tex/main.pdf) under "d
 <div align="center">
     <img src="doc/images/documentation.png" width="500">
 </div>
+
 ## Installation
 
 We generally recommend installing the library inside a virtual environment. In your virtual environment install
